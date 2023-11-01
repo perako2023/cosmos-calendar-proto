@@ -6,6 +6,7 @@ import { headers } from 'next/headers'
 import { TRPCReactProvider } from '~/trpc/react'
 
 import RootLayoutTopBar from '~/components/RootLayout/TopBar'
+import Toaster from '~/components/Toaster'
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -22,6 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 	return (
 		<html lang="en">
 			<body className={`font-sans ${inter.variable}`}>
+				<Toaster />
 				<TRPCReactProvider headers={headers()}>
 					<RootLayoutTopBar />
 
