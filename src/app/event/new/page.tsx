@@ -29,9 +29,9 @@ export default function CreateEventPage() {
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		if (createEvent.isLoading) return
-		if (!title || !date || !dayjs(date).isValid()) return
+		if (!title.trim() || !date || !dayjs(date).isValid()) return
 
-		createEvent.mutate({ title, content, date })
+		createEvent.mutate({ title: title.trim(), content: content.trim(), date })
 		setCanPost(false)
 	}
 
