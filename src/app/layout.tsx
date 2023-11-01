@@ -7,6 +7,8 @@ import { TRPCReactProvider } from '~/trpc/react'
 
 import RootLayoutTopBar from '~/components/RootLayout/TopBar'
 import Toaster from '~/components/Toaster'
+import AuthProvider from '~/context/AuthContext'
+import { getServerAuthSession } from '~/server/auth'
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -19,15 +21,19 @@ export const metadata = {
 	icons: [{ rel: 'icon', url: '/favicon.ico' }],
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+	const session = await getServerAuthSession()
+
 	return (
 		<html lang="en">
 			<body className={`font-sans ${inter.variable}`}>
 				<Toaster />
 				<TRPCReactProvider headers={headers()}>
-					<RootLayoutTopBar />
+					<AuthProvider session={session}>
+						<RootLayoutTopBar />
 
-					<main className="container mx-auto max-w-4xl">{children}</main>
+						<main className="container mx-auto max-w-4xl">{children}</main>
+					</AuthProvider>
 				</TRPCReactProvider>
 			</body>
 		</html>
