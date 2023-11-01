@@ -53,7 +53,8 @@ model User {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    events Event[]
+    events   Event[]
+    calendar Calendar?
 }
 
 model VerificationToken {
@@ -77,6 +78,19 @@ model Event {
     hostId String
     host   User   @relation(fields: [hostId], references: [id])
 
+    calendars Calendar[]
+
     @@unique([createdAt, id])
     @@index([hostId])
+}
+
+model Calendar {
+    id     String  @id @default(cuid())
+    events Event[]
+
+    owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+    ownerId String
+
+    @@unique([ownerId])
+    @@unique([ownerId, id])
 }

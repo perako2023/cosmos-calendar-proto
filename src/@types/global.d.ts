@@ -4,6 +4,8 @@ declare global {
 	namespace Cosmos {
 		type Event = EventSchema & {
 			host: Pick<User, 'id' | 'name'>
+
+			addedToCalendar: boolean
 		}
 	}
 }
