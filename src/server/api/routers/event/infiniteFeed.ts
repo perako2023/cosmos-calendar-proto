@@ -11,6 +11,7 @@ export const infiniteFeed = publicProcedure
 	)
 	.query(async ({ ctx, input: { limit = 10, cursor } }) => {
 		// if (cursor) await new Promise((resolve) => setTimeout(resolve, 1000))
+		const currentUserId = ctx.session?.user.id
 
 		const events = await ctx.db.event.findMany({
 			orderBy: [{ createdAt: 'desc' }, { title: 'asc' }],
@@ -18,7 +19,9 @@ export const infiniteFeed = publicProcedure
 			cursor: cursor ? { createdAt_id: cursor } : undefined,
 			include: {
 				host: { select: { id: true, name: true } },
-				calendars: { where: { ownerId: ctx.session?.user?.id } },
+				calendars: { where: { ownerId: currentUserId } },
+				likes: { where: { userId: currentUserId } },
+				_count: { select: { likes: true } },
 			},
 		})
 
@@ -36,7 +39,10 @@ export const infiniteFeed = publicProcedure
 					date: event.date,
 					content: event.content,
 
-					addedToCalendar: event.calendars.length > 0,
+					addedToCalendar: !!currentUserId && event.calendars.length > 0,
+					likedByCurrentUser: !!currentUserId && event.likes.length > 0,
+
+					_count: event._count,
 
 					host: event.host,
 					hostId: event.hostId,

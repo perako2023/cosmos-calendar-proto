@@ -6,6 +6,8 @@ declare global {
 			host: Pick<User, 'id' | 'name'>
 
 			addedToCalendar: boolean
+			_count: { likes: number }
+			likedByCurrentUser: boolean
 		}
 	}
 }

@@ -16,7 +16,6 @@ export default function InfiniteScrollEvents({ initialData }: InfiniteScrollEven
 		{
 			getNextPageParam: (lastPage) => lastPage.nextCursor,
 			initialData,
-			initialCursor: initialData,
 		},
 	)
 

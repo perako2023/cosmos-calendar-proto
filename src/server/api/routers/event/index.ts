@@ -2,9 +2,11 @@ import { z } from 'zod'
 import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc'
 
 import { infiniteFeed } from './infiniteFeed'
+import { toggleLike } from './toggleLike'
 
 export const eventRouter = createTRPCRouter({
 	infiniteFeed,
+	toggleLike,
 
 	create: protectedProcedure
 		.input(

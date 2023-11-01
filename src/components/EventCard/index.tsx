@@ -2,6 +2,7 @@
 import { api } from '~/trpc/react'
 import { ProfileLink } from '../ReusableLinks'
 import ToggleCalendarEvent from './ToggleCalendarEvent'
+import LikeButton from './LikeButton'
 
 export default function EventCard(props: Cosmos.Event) {
 	const trpcUtils = api.useUtils()
@@ -67,6 +68,30 @@ export default function EventCard(props: Cosmos.Event) {
 			<main className="mt-2">
 				<p>{props.content}</p>
 			</main>
+
+			<footer className="mt-2 flex items-center gap-2 border-t border-white/20 py-2">
+				<div className="flex items-center">
+					<LikeButton
+						onChange={({ addedLike, newLikesCount }) => {
+							updateOne({
+								updatedProperties: {
+									likedByCurrentUser: addedLike,
+									_count: { likes: newLikesCount },
+								},
+							})
+						}}
+						eventId={props.id}
+						likedByCurrentUser={props.likedByCurrentUser}
+					/>
+					<span className="ml-1 font-medium">
+						{props._count.likes > 0 &&
+							props._count.likes.toLocaleString(undefined, {
+								notation: 'compact',
+							})}
+						{props._count.likes > 1 ? ' Likes' : ' Like'}
+					</span>
+				</div>
+			</footer>
 		</div>
 	)
 }
