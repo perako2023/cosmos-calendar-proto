@@ -12,14 +12,16 @@ import { api } from '~/trpc/react'
 export default function CreateEventPage() {
 	const router = useRouter()
 	const [canPost, setCanPost] = useState(true)
+	const trpcUtils = api.useUtils()
 
 	const [title, setTitle] = useState('')
 	const [content, setContent] = useState('')
 	const [date, setDate] = useState<Date | null>(null)
 
 	const createEvent = api.event.create.useMutation({
-		onSuccess: (data) => {
+		onSuccess: async (data) => {
 			toast.success('Event created successfully!')
+			await trpcUtils.event.infiniteFeed.invalidate()
 			router.push(`/event/${data.id}`)
 		},
 	})

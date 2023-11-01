@@ -7,7 +7,7 @@ export default async function RootLayoutTopBar() {
 	const session = await getServerAuthSession()
 
 	return (
-		<header className="sticky top-0 flex items-center border-b border-white/20 bg-base-100">
+		<header className="sticky top-0 z-10 flex items-center border-b border-white/20 bg-base-100">
 			<Link href="/">
 				<h1 className="px-4 py-2 font-serif text-2xl font-semibold italic">
 					Cosmos Calendar

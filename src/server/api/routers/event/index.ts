@@ -1,7 +1,11 @@
 import { z } from 'zod'
 import { createTRPCRouter, protectedProcedure } from '~/server/api/trpc'
 
+import { infiniteFeed } from './infiniteFeed'
+
 export const eventRouter = createTRPCRouter({
+	infiniteFeed,
+
 	create: protectedProcedure
 		.input(
 			z.object({

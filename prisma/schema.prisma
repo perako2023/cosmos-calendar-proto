@@ -77,5 +77,6 @@ model Event {
     hostId String
     host   User   @relation(fields: [hostId], references: [id])
 
+    @@unique([createdAt, id])
     @@index([hostId])
 }
