@@ -22,7 +22,11 @@ export default function CreateEventPage() {
 		onSuccess: async (data) => {
 			toast.success('Event created successfully!')
 			await trpcUtils.event.infiniteFeed.invalidate()
+			setCanPost(false)
 			router.push(`/event/${data.id}`)
+		},
+		onError: () => {
+			toast.error('Event creation failed, \nplease try again.', { duration: 3000 })
 		},
 	})
 
@@ -32,11 +36,10 @@ export default function CreateEventPage() {
 		if (!title.trim() || !date || !dayjs(date).isValid()) return
 
 		createEvent.mutate({ title: title.trim(), content: content.trim(), date })
-		setCanPost(false)
 	}
 
 	return (
-		<div className="p-4">
+		<div className="container mx-auto max-w-4xl p-4">
 			<form onSubmit={handleSubmit}>
 				<fieldset className="flex flex-col gap-4">
 					<legend className="mx-auto mb-4 text-xl font-semibold">Create Event</legend>

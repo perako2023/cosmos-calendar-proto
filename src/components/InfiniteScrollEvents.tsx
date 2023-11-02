@@ -21,8 +21,6 @@ export default function InfiniteScrollEvents({ initialData }: InfiniteScrollEven
 
 	const events = infiniteQuery.data?.pages.flatMap((page) => page.events) ?? []
 
-	// if (infiniteQuery.isLoading) return <p>Loading...</p>
-	// if (infiniteQuery.isError) return <p>Error...</p>
 	if (events.length === 0) {
 		return (
 			<div className="my-4">
@@ -38,7 +36,7 @@ export default function InfiniteScrollEvents({ initialData }: InfiniteScrollEven
 			dataLength={events.length}
 			next={infiniteQuery.fetchNextPage}
 			hasMore={!!infiniteQuery.hasNextPage}
-			loader={<p>Loading...</p>}
+			loader={<span className="loading loading-spinner loading-md mx-auto my-4 block" />}
 		>
 			<ul className="grid gap-2">
 				{events.map((event) => (

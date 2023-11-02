@@ -1,5 +1,6 @@
 'use client'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { api } from '~/trpc/react'
 
 export type LikeButtonProps = {
@@ -9,7 +10,8 @@ export type LikeButtonProps = {
 }
 
 export default function LikeButton(props: LikeButtonProps) {
-	const session = useSession()
+	const user = useSession().data?.user
+	const router = useRouter()
 
 	const toggleLike = api.event.toggleLike.useMutation({
 		onSuccess: (newValue) => {
@@ -19,9 +21,12 @@ export default function LikeButton(props: LikeButtonProps) {
 
 	return (
 		<button
-			disabled={session.status !== 'authenticated'}
-			className="btn-icon"
-			onClick={() => toggleLike.mutate({ eventId: props.eventId })}
+			onClick={() => {
+				if (!user) {
+					return router.push('/api/auth/signin')
+				}
+				toggleLike.mutate({ eventId: props.eventId })
+			}}
 		>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"

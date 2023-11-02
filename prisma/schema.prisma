@@ -56,6 +56,9 @@ model User {
     events      Event[]
     calendar    Calendar?
     likedEvents EventLike[]
+
+    chatRooms        ChatRoom[]
+    chatRoomMessages ChatRoomMessage[]
 }
 
 model VerificationToken {
@@ -67,11 +70,21 @@ model VerificationToken {
 }
 
 //------------------------------------------------------------------------
+model Calendar {
+    id     String  @id @default(cuid())
+    events Event[]
+
+    owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+    ownerId String @unique
+
+    @@unique([ownerId, id])
+}
+
 model Event {
     id      String   @id @default(cuid())
     title   String
-    content String?
     date    DateTime
+    content String?  @db.Text
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -82,19 +95,11 @@ model Event {
     calendars Calendar[]
     likes     EventLike[]
 
+    chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id])
+    chatRoomId String   @unique
+
     @@unique([createdAt, id])
     @@index([hostId])
-}
-
-model Calendar {
-    id     String  @id @default(cuid())
-    events Event[]
-
-    owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
-    ownerId String
-
-    @@unique([ownerId])
-    @@unique([ownerId, id])
 }
 
 model EventLike {
@@ -108,4 +113,41 @@ model EventLike {
     @@unique([userId, eventId])
     @@index([userId])
     @@index([eventId])
+}
+
+model ChatRoom {
+    id          String  @id @default(cuid())
+    title       String
+    description String?
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    users    User[]
+    messages ChatRoomMessage[]
+
+    event Event?
+}
+
+model ChatRoomMessage {
+    id      String @id @default(cuid())
+    content String @db.Text
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    parent   ChatRoomMessage?  @relation("parent_reply", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction) //TODO - handle deleted messages
+    parentId String?
+    reply    ChatRoomMessage[] @relation("parent_reply")
+
+    chatRoom   ChatRoom @relation(fields: [chatRoomId], references: [id], onDelete: Cascade)
+    chatRoomId String
+
+    sender   User   @relation(fields: [senderId], references: [id])
+    senderId String
+
+    @@unique([createdAt, id])
+    @@index([chatRoomId])
+    @@index([senderId])
+    @@index([parentId])
 }

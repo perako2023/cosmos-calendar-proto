@@ -16,23 +16,38 @@ export const AuthLink = (props: ReusableLinkProps) => {
 	)
 }
 
-export const ProfileLink = (
-	props: ReusableLinkProps & {
-		/** userId of the user to navigate to */
-		userId: string
-	},
-) => {
-	return <Link {...props} href={`/profile/${props.userId}`} />
+export const ProfileLink = ({
+	userId,
+	...props
+}: ReusableLinkProps & {
+	/** userId of the user to navigate to */
+	userId: string
+}) => {
+	return <Link {...props} href={`/profile/${userId}`} />
 }
 
-export const EventLink = (
-	props: ReusableLinkProps & {
-		/**
-		 * eventId of the event to navigate to \
-		 * provide 'new' to go to create event page
-		 */
-		eventId: string
-	},
-) => {
-	return <Link {...props} href={`/event/${props.eventId}`} />
+export const EventLink = ({
+	eventId,
+	...props
+}: ReusableLinkProps & {
+	/**
+	 * eventId of the event to navigate to \
+	 * provide 'new' to go to create event page
+	 */
+	eventId: string
+}) => {
+	return <Link {...props} href={`/event/${eventId}`} />
+}
+
+export const ChatLink = ({
+	roomId: chatRoomId,
+	...props
+}: ReusableLinkProps & {
+	/**
+	 * You need to append 'event/' to go to event chat room
+	 * @example - chatRoomId={`event/${chatRoomId}`}
+	 */
+	roomId?: string
+}) => {
+	return <Link {...props} href={chatRoomId ? `/chat/${chatRoomId}` : `/chat`} />
 }

@@ -1,4 +1,4 @@
-import type { User, Event as EventSchema } from '@prisma/client'
+import type { User, Event as EventSchema, ChatRoomMessage } from '@prisma/client'
 
 declare global {
 	namespace Cosmos {
@@ -8,6 +8,18 @@ declare global {
 			addedToCalendar: boolean
 			_count: { likes: number }
 			likedByCurrentUser: boolean
+		}
+
+		namespace Event {
+			type Extras = {
+				userJoinedChatRoom: boolean
+			}
+		}
+
+		namespace ChatRoom {
+			type Message = Pick<ChatRoomMessage, 'id' | 'content' | 'createdAt'> & {
+				sender: Pick<User, 'name' | 'image' | 'id'>
+			}
 		}
 	}
 }

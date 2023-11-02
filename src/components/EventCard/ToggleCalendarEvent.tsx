@@ -10,9 +10,12 @@ export type ToggleCalendarEventProps = {
 	addedToCalendar: boolean
 
 	children?: React.ReactNode
+
+	/** @param addedToCalendar - whether the event was added to the calendar or removed */
 	onChange?: (addedToCalendar: boolean) => void
 }
 
+/** Add or remove an event from the user's calendar on click */
 export default function ToggleCalendarEvent(props: ToggleCalendarEventProps) {
 	const session = useSession()
 	const toastId = useRef('')
@@ -26,7 +29,7 @@ export default function ToggleCalendarEvent(props: ToggleCalendarEventProps) {
 	const handleAddToCalendar = () => {
 		if (session.status === 'loading') return
 		if (session.status === 'unauthenticated') {
-			toast('Please sign in if you want to add events to your calendar', {
+			toast('You need to sign in if you want to add events on your calendar', {
 				duration: 5000,
 			})
 			return
@@ -65,7 +68,7 @@ export default function ToggleCalendarEvent(props: ToggleCalendarEventProps) {
 			{props.children ? (
 				props.children
 			) : (
-				<span className="flex h-min w-min flex-col items-center overflow-hidden rounded-md bg-gray-100 pb-1 transition hover:-translate-x-0.5">
+				<span className="flex h-min w-min flex-col items-center overflow-hidden rounded-md border border-white/20 transition hover:-translate-x-0.5">
 					<span
 						className={`px-2 text-sm uppercase text-white transition-colors 
                         ${
@@ -78,7 +81,13 @@ export default function ToggleCalendarEvent(props: ToggleCalendarEventProps) {
 					>
 						{props.date.toLocaleString(undefined, { month: 'short' })}
 					</span>
-					<span className="text-xl font-semibold text-black/60">
+					<span
+						className={`w-full pb-1 text-xl font-semibold transition-colors ${
+							props.addedToCalendar || !session.data?.user
+								? 'bg-gray-100 text-black/60'
+								: ''
+						}`}
+					>
 						{props.date.toLocaleString(undefined, { day: '2-digit' })}
 					</span>
 				</span>

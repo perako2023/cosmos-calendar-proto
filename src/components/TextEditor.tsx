@@ -8,7 +8,7 @@ type TextEditorProps = TextareaHTMLAttributes<HTMLTextAreaElement> & {
 	noNewLine?: boolean
 }
 
-export default function TextEditor(props: TextEditorProps) {
+export default function TextEditor({ noNewLine, ...props }: TextEditorProps) {
 	const classes = classNames(
 		'textarea',
 		'resize-none',
@@ -26,7 +26,7 @@ export default function TextEditor(props: TextEditorProps) {
 	}
 
 	const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-		if (props.noNewLine && e.key === 'Enter') {
+		if (noNewLine && e.key === 'Enter') {
 			e.preventDefault()
 			return
 		}

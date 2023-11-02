@@ -30,9 +30,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 				<Toaster />
 				<TRPCReactProvider headers={headers()}>
 					<AuthProvider session={session}>
-						<RootLayoutTopBar />
+						<div className="flex min-h-screen flex-col">
+							<RootLayoutTopBar />
 
-						<main className="container mx-auto max-w-4xl">{children}</main>
+							<main className="flex grow [&>*]:grow">{children}</main>
+						</div>
 					</AuthProvider>
 				</TRPCReactProvider>
 			</body>

@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { AuthLink } from '~/components/ReusableLinks'
+import { AuthLink, ChatLink } from '~/components/ReusableLinks'
 import { getServerAuthSession } from '~/server/auth'
 
 export default async function RootLayoutTopBar() {
@@ -30,6 +30,9 @@ export default async function RootLayoutTopBar() {
 										Home
 									</Link>
 								</li>
+								<li className="py-1">
+									<ChatLink className="p-0">Chats</ChatLink>
+								</li>
 								<li className="py-1">Calendar</li>
 								<li className="py-1">Notifications</li>
 							</>
@@ -41,7 +44,7 @@ export default async function RootLayoutTopBar() {
 				</div>
 
 				{session?.user && (
-					<ul className="max-sm:hidden">
+					<ul className="flex max-sm:hidden">
 						<li>
 							<Link href="/" className="tooltip tooltip-bottom" data-tip="Home">
 								<Image
@@ -52,7 +55,20 @@ export default async function RootLayoutTopBar() {
 									alt="home"
 								/>
 							</Link>
-							<div className="tooltip tooltip-bottom" data-tip="Calendar">
+						</li>
+						<li>
+							<ChatLink className="tooltip tooltip-bottom" data-tip="Chats">
+								<Image
+									className="btn btn-square btn-md p-2 hover:bg-white/20"
+									src="/assets/chat-bubble-left-right.svg"
+									height={32}
+									width={32}
+									alt="chats"
+								/>
+							</ChatLink>
+						</li>
+						<li>
+							<span className="tooltip tooltip-bottom" data-tip="Calendar">
 								<Image
 									className="btn btn-square btn-md p-2 hover:bg-white/20"
 									src="/assets/calendar.svg"
@@ -60,8 +76,10 @@ export default async function RootLayoutTopBar() {
 									width={32}
 									alt="calendar"
 								/>
-							</div>
-							<div className="tooltip tooltip-bottom" data-tip="Notifications">
+							</span>
+						</li>
+						<li>
+							<span className="tooltip tooltip-bottom" data-tip="Notifications">
 								<Image
 									className="btn btn-square btn-md p-2 hover:bg-white/20"
 									src="/assets/bell.svg"
@@ -69,7 +87,7 @@ export default async function RootLayoutTopBar() {
 									width={32}
 									alt="notifications"
 								/>
-							</div>
+							</span>
 						</li>
 					</ul>
 				)}

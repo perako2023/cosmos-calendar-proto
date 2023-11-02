@@ -1,6 +1,6 @@
 'use client'
 import { api } from '~/trpc/react'
-import { ProfileLink } from '../ReusableLinks'
+import { EventLink, ProfileLink } from '../ReusableLinks'
 import ToggleCalendarEvent from './ToggleCalendarEvent'
 import LikeButton from './LikeButton'
 
@@ -44,13 +44,6 @@ export default function EventCard(props: Cosmos.Event) {
 						@{props.host.name}
 					</ProfileLink>
 					<h4 className="text-xl font-semibold">{props.title}</h4>
-					<span>
-						{'📅 '}
-						{props.date.toLocaleString(undefined, {
-							dateStyle: 'long',
-							timeStyle: 'short',
-						})}
-					</span>
 				</section>
 
 				<section className="ml-auto">
@@ -69,14 +62,14 @@ export default function EventCard(props: Cosmos.Event) {
 				<p>{props.content}</p>
 			</main>
 
-			<footer className="mt-2 flex items-center gap-2 border-t border-white/20 py-2">
+			<footer className="mt-2 flex items-center justify-center gap-4 border-t border-white/20 pt-1">
 				<div className="flex items-center">
 					<LikeButton
 						onChange={({ addedLike, newLikesCount }) => {
 							updateOne({
 								updatedProperties: {
 									likedByCurrentUser: addedLike,
-									_count: { likes: newLikesCount },
+									_count: { ...props._count, likes: newLikesCount },
 								},
 							})
 						}}
@@ -91,6 +84,10 @@ export default function EventCard(props: Cosmos.Event) {
 						{props._count.likes > 1 ? ' Likes' : ' Like'}
 					</span>
 				</div>
+
+				<EventLink className="btn btn-sm hover:bg-secondary-500" eventId={props.id}>
+					View Details
+				</EventLink>
 			</footer>
 		</div>
 	)

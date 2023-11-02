@@ -9,7 +9,7 @@ export default async function HomePage() {
 	const initialEventsData = await api.event.infiniteFeed.query({})
 
 	return (
-		<div>
+		<div className="container mx-auto max-w-4xl">
 			{user && (
 				<div className="my-4 flex gap-2 rounded-lg border border-white/20 p-4">
 					<ProfileLink userId={user.id}>

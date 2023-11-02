@@ -12,3 +12,34 @@
 .tooltip::before {
 	@apply bg-secondary-950;
 }
+
+.border,
+.border-x,
+.border-y,
+.border-t,
+.border-r,
+.border-b,
+.border-l {
+	@apply border-white/20;
+}
+
+/* width */
+::-webkit-scrollbar {
+	width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: #242323;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: rgba(255, 255, 255, 0.2);
+	border-radius: 1000px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
